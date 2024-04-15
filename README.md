@@ -11,6 +11,8 @@ npm run dev
 npm install mongoose
 npm install mongodb
 ```
+## Project Description
+Generate a request quickly and efficiently for any allocated shop, with associated approver. To get a detailed analysis, a user can download the excel report of the requests received.
 
 ## Screenshots
 
