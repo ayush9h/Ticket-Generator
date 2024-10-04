@@ -44,7 +44,7 @@ export default function TicketTable() {
   return (
     <div className="max-width mt-10 mb-10 p-5 bg-white border border-zinc-400 rounded-md shadow-xl">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Today's Tickets</h2>
+        <h2 className="text-xl font-semibold">Today Tickets</h2>
         <div className="flex items-center">
           <button 
             onClick={exportToExcel} 
