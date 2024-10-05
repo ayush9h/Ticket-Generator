@@ -11,8 +11,8 @@ model Ticket {
   id             Int      @id @default(autoincrement())
   shopName       String
   safetyIssue    String
-  prodTarget     Int
-  prodActual     Int
+  prodTarget     String
+  prodActual     String
   affectedDnTime String
   grossDnTime    String
   majorBreakdown String

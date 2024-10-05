@@ -27,8 +27,8 @@ app.post("/api/tickets", async (req, res) => {
       data: {
         shopName,
         safetyIssue,
-        prodTarget: parseInt(prodTarget, 10),
-        prodActual: parseInt(prodActual, 10),
+        prodTarget,
+        prodActual,
         affectedDnTime,
         grossDnTime,
         majorBreakdown,

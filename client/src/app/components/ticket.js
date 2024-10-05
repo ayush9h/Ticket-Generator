@@ -26,7 +26,7 @@ export default function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post("https://ticket-generator-h2gs.onrender.com/api/tickets", formData);
+        await axios.post("http://localhost:5000/api/tickets", formData);
         toast.success("Form submitted successfully!");
         setFormData({
           shopName: "",
@@ -82,7 +82,7 @@ export default function Ticket() {
           <div>
             <label htmlFor="prodTarget">Prod. Target: <span className="text-red-600">*</span></label>
             <input
-              type="number"
+              type="text"
               id="prodTarget"
               name="prodTarget"
               value={formData.prodTarget}
@@ -93,7 +93,7 @@ export default function Ticket() {
           <div>
             <label htmlFor="prodActual">Prod. Actual: <span className="text-red-600">*</span></label>
             <input
-              type="number"
+              type="text"
               id="prodActual"
               name="prodActual"
               value={formData.prodActual}
