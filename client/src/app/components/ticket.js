@@ -58,15 +58,27 @@ export default function Ticket() {
       <form onSubmit={handleSubmit} className="mt-4 max-width p-5 bg-white border border-zinc-400 rounded-md shadow-xl">
         <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           <div>
-            <label htmlFor="shopName">Shop Name: <span className="text-red-600">*</span></label>
-            <input
-              type="text"
-              id="shopName"
+            <label html="shopName">Shop Name: <span className="text-red-600">*</span></label>
+            
+            <select
               name="shopName"
-              value={formData.shopName}
-              onChange={handleChange}
+              id="shopName"
+              value={formData.shopName} 
+              onChange={handleChange} 
               className="w-full p-2 border border-zinc-300 rounded-md"
-            />
+            >
+              <option value="">Select Shop</option>
+              <option value="Press">Press</option>
+              <option value="X1">X1</option>
+              <option value="X4">X4</option>
+              <option value="Q5">Q5</option>
+              <option value="Nova">Nova</option>
+              <option value="TCF1">TCF1</option>
+              <option value="TCF2">TCF2</option>
+              <option value="Paint">Paint</option>
+              <option value="Engine">Engine</option>
+              <option value="TA">TA</option>
+            </select>
           </div>
           <div>
             <label htmlFor="safetyIssue">Safety Issue: <span className="text-red-600">*</span></label>
