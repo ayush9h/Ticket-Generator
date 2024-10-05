@@ -11,7 +11,7 @@ export default function TicketTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/tickets"); 
+        const response = await axios.get("https://ticket-generator-h2gs.onrender.com/api/tickets"); 
         setData(response.data); 
       } catch (error) {
         console.error("Error fetching data:", error); 
@@ -44,7 +44,7 @@ export default function TicketTable() {
   return (
     <div className="max-width mt-10 mb-10 p-5 bg-white border border-zinc-400 rounded-md shadow-xl">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Tickets</h2>
+        <h2 className="text-xl font-semibold"> Tickets</h2>
         <div className="flex items-center">
           <button 
             onClick={exportToExcel} 
