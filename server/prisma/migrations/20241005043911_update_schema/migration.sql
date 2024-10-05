@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Ticket" ALTER COLUMN "prodTarget" SET DATA TYPE TEXT,
-ALTER COLUMN "prodActual" SET DATA TYPE TEXT;
