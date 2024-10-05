@@ -26,7 +26,7 @@ export default function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post("https://ticket-generator-h2gs.onrender.com/api/tickets", formData);
+        await axios.post("https://ticket-generator-alpo.onrender.com/api/tickets", formData);
         toast.success("Form submitted successfully!");
         setFormData({
           shopName: "",
