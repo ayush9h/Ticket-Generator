@@ -44,7 +44,7 @@ export default function TicketTable() {
   return (
     <div className="max-width mt-10 mb-10 p-5 bg-white border border-zinc-400 rounded-md shadow-xl">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Today's Tickets</h2>
+        <h2 className="text-xl font-semibold">Tickets</h2>
         <div className="flex items-center">
           <button 
             onClick={exportToExcel} 
@@ -52,39 +52,42 @@ export default function TicketTable() {
           >
             Export
           </button>
-          <div className="p-2 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-md">
-            Data will be refreshed on {refreshTime}.
-          </div>
         </div>
+        
+      </div>
+      <div className="p-2 mb-5 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-md">
+            Data will be refreshed on {refreshTime}.
       </div>
 
       {data.length > 0 ? (
-        <table className="min-w-full">
-          <thead>
-            <tr>
-              <th className="p-2 bg-slate-200 border border-slate-400">Shop Name</th>
-              <th className="p-2 bg-slate-200 border border-slate-400">Safety Issue</th>
-              <th className="p-2 bg-slate-200 border border-slate-400">Prod Target</th>
-              <th className="p-2 bg-slate-200 border border-slate-400">Prod Actual</th>
-              <th className="p-2 bg-slate-200 border border-slate-400">Affected Dn Time</th>
-              <th className="p-2 bg-slate-200 border border-slate-400">Gross Dn Time</th>
-              <th className="p-2 bg-slate-200 border border-slate-400">Major Breakdown</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((ticket, index) => (
-              <tr key={index}>
-                <td className="p-2 border border-slate-300">{ticket.shopName}</td>
-                <td className="p-2 border border-slate-300">{ticket.safetyIssue}</td>
-                <td className="p-2 border border-slate-300">{ticket.prodTarget}</td>
-                <td className="p-2 border border-slate-300">{ticket.prodActual}</td>
-                <td className="p-2 border border-slate-300">{ticket.affectedDnTime}</td>
-                <td className="p-2 border border-slate-300">{ticket.grossDnTime}</td>
-                <td className="p-2 border border-slate-300">{ticket.majorBreakdown}</td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full md:w-auto">
+            <thead>
+              <tr>
+                <th className="p-2 bg-slate-200 border border-slate-400">Shop Name</th>
+                <th className="p-2 bg-slate-200 border border-slate-400">Safety Issue</th>
+                <th className="p-2 bg-slate-200 border border-slate-400">Prod Target</th>
+                <th className="p-2 bg-slate-200 border border-slate-400">Prod Actual</th>
+                <th className="p-2 bg-slate-200 border border-slate-400">Affected Dn Time</th>
+                <th className="p-2 bg-slate-200 border border-slate-400">Gross Dn Time</th>
+                <th className="p-2 bg-slate-200 border border-slate-400">Major Breakdown</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((ticket, index) => (
+                <tr key={index}>
+                  <td className="p-2 border border-slate-300">{ticket.shopName}</td>
+                  <td className="p-2 border border-slate-300">{ticket.safetyIssue}</td>
+                  <td className="p-2 border border-slate-300">{ticket.prodTarget}</td>
+                  <td className="p-2 border border-slate-300">{ticket.prodActual}</td>
+                  <td className="p-2 border border-slate-300">{ticket.affectedDnTime}</td>
+                  <td className="p-2 border border-slate-300">{ticket.grossDnTime}</td>
+                  <td className="p-2 border border-slate-300">{ticket.majorBreakdown}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <p>No tickets available for today.</p>
       )}

@@ -56,7 +56,7 @@ export default function Ticket() {
   return (
     <>
       <form onSubmit={handleSubmit} className="mt-4 max-width p-5 bg-white border border-zinc-400 rounded-md shadow-xl">
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           <div>
             <label htmlFor="shopName">Shop Name: <span className="text-red-600">*</span></label>
             <input
