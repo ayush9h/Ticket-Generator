@@ -1,8 +1,10 @@
 import Navbar from "./components/navbar";
 import Ticket from "./components/ticket";
 import TicketTable from "./components/table"
+import { Suspense } from "react";
+import Loading from "./components/loading";
 
-export default function Home() {
+function Home() {
   return (
     <>
       <Navbar />
@@ -10,7 +12,11 @@ export default function Home() {
         <h1 className="text-3xl font-semibold mt-12">CMS DWM Data Capturing System - TMPV Pune </h1>
       </div>
       <Ticket />
+      <Suspense fallback={<Loading/>}>
       <TicketTable />
+      </Suspense>
     </>
   );
 }
+
+export default Home

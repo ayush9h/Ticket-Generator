@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios"; 
 import { toast } from "react-hot-toast";
 
-export default function Ticket() {
+function Ticket() {
   const [formData, setFormData] = useState({
     shopName: "",
     safetyIssue: "",
@@ -26,7 +26,7 @@ export default function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post("https://ticket-generator-alpo.onrender.com/api/tickets", formData);
+        await axios.post(process.env.BACKEND_URL, formData);
         toast.success("Form submitted successfully!");
         setFormData({
           shopName: "",
@@ -158,3 +158,5 @@ export default function Ticket() {
     </>
   );
 }
+
+export default Ticket;
