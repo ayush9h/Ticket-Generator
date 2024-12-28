@@ -119,14 +119,20 @@ function Ticket() {
             >
               Safety Issue: <span className="text-red-600">*</span>
             </label>
-            <input
+            <select
               type="text"
               id="safetyIssue"
               name="safetyIssue"
               value={formData.safetyIssue}
               onChange={handleChange}
               className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
-            />
+            >
+              <option value="">NIL</option>
+              <option value="Near Miss">Near Miss</option>
+              <option value="First Aid">First Aid</option>
+              <option value="RWC">RWC</option>
+              <option value="LTI">LTI</option>
+            </select>
           </div>
           <div>
             <label
