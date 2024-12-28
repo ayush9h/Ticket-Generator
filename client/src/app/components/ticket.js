@@ -92,7 +92,7 @@ function Ticket() {
             />
           </div>
           <div>
-            <label htmlFor="prodTarget">Prod. Target: <span className="text-red-600">*</span></label>
+            <label htmlFor="prodTarget">Prod. Target(number): <span className="text-red-600">*</span></label>
             <input
               type="text"
               id="prodTarget"
@@ -103,7 +103,7 @@ function Ticket() {
             />
           </div>
           <div>
-            <label htmlFor="prodActual">Prod. Actual: <span className="text-red-600">*</span></label>
+            <label htmlFor="prodActual">Prod. Actual(number): <span className="text-red-600">*</span></label>
             <input
               type="text"
               id="prodActual"
@@ -114,7 +114,7 @@ function Ticket() {
             />
           </div>
           <div>
-            <label htmlFor="affectedDnTime">Affected Dn Time: <span className="text-red-600">*</span></label>
+            <label htmlFor="affectedDnTime">Affected DN. Time(mins): <span className="text-red-600">*</span></label>
             <input
               type="text"
               id="affectedDnTime"
@@ -125,7 +125,7 @@ function Ticket() {
             />
           </div>
           <div>
-            <label htmlFor="grossDnTime">Gross DN Time: <span className="text-red-600">*</span></label>
+            <label htmlFor="grossDnTime">Gross DN. Time(mins): <span className="text-red-600">*</span></label>
             <input
               type="text"
               id="grossDnTime"
