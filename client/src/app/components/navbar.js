@@ -10,7 +10,6 @@ export default function Navbar() {
               <h1 className="text-xl ml-3 font-semibold mt-2">TATA MOTORS</h1>
             </div>
           </div>
-          
         </nav>
       </header>
   </>;

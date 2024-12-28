@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios"; 
 import * as XLSX from "xlsx";
 import { toast } from "react-hot-toast";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default function TicketTable() {
   const [data, setData] = useState([]);
@@ -11,7 +13,7 @@ export default function TicketTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://ticket-generator-h2gs.onrender.com/api/tickets"); 
+        const response = await axios.get("http://localhost:5000/api/tickets"); 
         setData(response.data); 
       } catch (error) {
         console.error("Error fetching data:", error); 
@@ -58,8 +60,7 @@ export default function TicketTable() {
       <div className="p-2 mb-5 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-md">
             Data will be refreshed on {refreshTime}.
       </div>
-
-      {data.length > 0 ? (
+        <Suspense fallback={<Loading/>}>
         <div className="overflow-x-auto">
           <table className="min-w-full md:w-auto">
             <thead>
@@ -88,9 +89,7 @@ export default function TicketTable() {
             </tbody>
           </table>
         </div>
-      ) : (
-        <p>No tickets available for today.</p>
-      )}
+        </Suspense>
     </div>
   );
 }
