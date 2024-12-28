@@ -26,7 +26,7 @@ function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post(process.env.BACKEND_URL, formData);
+        await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL, formData);
         toast.success("Form submitted successfully!");
         setFormData({
           shopName: "",
@@ -114,7 +114,7 @@ function Ticket() {
             />
           </div>
           <div>
-            <label htmlFor="affectedDnTime">Affected Dn Time(mins): <span className="text-red-600">*</span></label>
+            <label htmlFor="affectedDnTime">Affected Dn Time: <span className="text-red-600">*</span></label>
             <input
               type="text"
               id="affectedDnTime"
@@ -125,7 +125,7 @@ function Ticket() {
             />
           </div>
           <div>
-            <label htmlFor="grossDnTime">Gross DN Time(mins): <span className="text-red-600">*</span></label>
+            <label htmlFor="grossDnTime">Gross DN Time: <span className="text-red-600">*</span></label>
             <input
               type="text"
               id="grossDnTime"
