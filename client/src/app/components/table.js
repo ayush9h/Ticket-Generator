@@ -2,6 +2,7 @@
 import axios from "axios"; 
 import * as XLSX from "xlsx";
 import { toast } from "react-hot-toast";
+import { Trash2 } from "lucide-react";
 
 async function fetchTableData(){
   let response = await axios.get(process.env.NEXT_PUBLIC_BACKEND_URL)
@@ -50,6 +51,8 @@ async function TicketTable() {
                 <th className="p-2 bg-blue-100 border border-slate-400">Major Breakdown</th>
                 <th className="p-2 bg-blue-100 border border-slate-400">Employee ID</th>
                 <th className="p-2 bg-blue-100 border border-slate-400">Employee Name</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Actions</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -64,6 +67,9 @@ async function TicketTable() {
                   <td className="p-2 border border-slate-300">{ticket.majorBreakdown}</td>
                   <td className="p-2 border border-slate-300">{ticket.employeeId}</td>
                   <td className="p-2 border border-slate-300">{ticket.employeeName}</td>
+                  <td className="p-2 border border-slate-300">
+                    <Trash2 size={18} className="text-red-400 cursor-pointer hover:text-red-800 hover:rounded-full hover:w-6 hover:h-6 transition-all"></Trash2>
+                  </td>
                 </tr>
               ))}
             </tbody>
