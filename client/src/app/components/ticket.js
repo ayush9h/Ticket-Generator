@@ -26,7 +26,7 @@ export default function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post("http://localhost:5000/api/tickets", formData);
+        await axios.post("https://ticket-generator-alpo.onrender.com/api/tickets", formData);
         toast.success("Form submitted successfully!");
         setFormData({
           shopName: "",
@@ -63,7 +63,7 @@ export default function Ticket() {
             <select
               name="shopName"
               id="shopName"
-              vjlue={formData.shopName} 
+              value={formData.shopName} 
               onChange={handleChange} 
               className="w-full p-2 border border-zinc-300 rounded-md"
             >
