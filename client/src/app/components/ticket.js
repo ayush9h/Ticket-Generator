@@ -13,7 +13,7 @@ function Ticket() {
     grossDnTime: "",
     majorBreakdown: "",
     employeeId: "",
-    employeeName: "",
+    employeeName: ""
   });
 
   const handleChange = (e) => {
