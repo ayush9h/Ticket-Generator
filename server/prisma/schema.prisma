@@ -16,5 +16,7 @@ model Ticket {
   affectedDnTime String
   grossDnTime    String
   majorBreakdown String
+  employeeId     String
+  employeeName   String
   createdAt      DateTime @default(now())
 }

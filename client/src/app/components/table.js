@@ -25,13 +25,13 @@ async function TicketTable() {
   };
 
   return (
-    <div className="max-width mt-10 mb-10 p-5 bg-white border border-zinc-400 rounded-md shadow-xl">
+    <div className="max-width mt-10 mb-10 p-5 border border-gray-300 bg-zinc-100 rounded-lg">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold"> Tickets</h2>
         <div className="flex items-center">
           <button 
             onClick={exportToExcel} 
-            className="w-32 p-2 text-black bg-transparent border border-zinc-500 rounded-md hover:bg-black hover:text-white transition-all mr-4"
+            className="w-32 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
             Export
           </button>
@@ -41,13 +41,15 @@ async function TicketTable() {
           <table className="min-w-full md:w-auto">
             <thead>
               <tr>
-                <th className="p-2 bg-slate-200 border border-slate-400">Shop Name</th>
-                <th className="p-2 bg-slate-200 border border-slate-400">Safety Issue</th>
-                <th className="p-2 bg-slate-200 border border-slate-400">Prod Target</th>
-                <th className="p-2 bg-slate-200 border border-slate-400">Prod Actual</th>
-                <th className="p-2 bg-slate-200 border border-slate-400">Affected Dn Time</th>
-                <th className="p-2 bg-slate-200 border border-slate-400">Gross Dn Time</th>
-                <th className="p-2 bg-slate-200 border border-slate-400">Major Breakdown</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Shop Name</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Safety Issue</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Prod Target</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Prod Actual</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Affected DN. Time</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Gross DN. Time</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Major Breakdown</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Employee ID</th>
+                <th className="p-2 bg-blue-100 border border-slate-400">Employee Name</th>
               </tr>
             </thead>
             <tbody>
@@ -60,6 +62,8 @@ async function TicketTable() {
                   <td className="p-2 border border-slate-300">{ticket.affectedDnTime}</td>
                   <td className="p-2 border border-slate-300">{ticket.grossDnTime}</td>
                   <td className="p-2 border border-slate-300">{ticket.majorBreakdown}</td>
+                  <td className="p-2 border border-slate-300">{ticket.employeeId}</td>
+                  <td className="p-2 border border-slate-300">{ticket.employeeName}</td>
                 </tr>
               ))}
             </tbody>

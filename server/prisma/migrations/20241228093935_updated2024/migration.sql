@@ -8,6 +8,8 @@ CREATE TABLE "Ticket" (
     "affectedDnTime" TEXT NOT NULL,
     "grossDnTime" TEXT NOT NULL,
     "majorBreakdown" TEXT NOT NULL,
+    "employeeId" TEXT NOT NULL,
+    "employeeName" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")

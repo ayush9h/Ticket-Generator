@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import axios from "axios"; 
+import axios from "axios";
 import { toast } from "react-hot-toast";
 
 function Ticket() {
@@ -12,6 +12,8 @@ function Ticket() {
     affectedDnTime: "",
     grossDnTime: "",
     majorBreakdown: "",
+    employeeId: "",
+    employeeName: "",
   });
 
   const handleChange = (e) => {
@@ -30,12 +32,14 @@ function Ticket() {
         toast.success("Form submitted successfully!");
         setFormData({
           shopName: "",
-          safetyIssue: "",
+          safetyIssue: "NIL",
           prodTarget: "",
           prodActual: "",
           affectedDnTime: "",
           grossDnTime: "",
           majorBreakdown: "",
+          employeeId: "",
+          employeeName: "",
         });
       } catch (error) {
         console.error("Error submitting form:", error);
@@ -45,8 +49,29 @@ function Ticket() {
   };
 
   const validateForm = () => {
-    const { shopName, safetyIssue, prodTarget, prodActual, affectedDnTime, grossDnTime, majorBreakdown } = formData;
-    if (!shopName || !safetyIssue || !prodTarget || !prodActual || !affectedDnTime || !grossDnTime || !majorBreakdown) {
+    const {
+      shopName,
+      safetyIssue,
+      prodTarget,
+      prodActual,
+      affectedDnTime,
+      grossDnTime,
+      majorBreakdown,
+      employeeId,
+      employeeName,
+    } = formData;
+
+    if (
+      !shopName ||
+      !safetyIssue ||
+      !prodTarget ||
+      !prodActual ||
+      !affectedDnTime ||
+      !grossDnTime ||
+      !majorBreakdown ||
+      !employeeId ||
+      !employeeName
+    ) {
       toast.error("Please fill in all required fields.");
       return false;
     }
@@ -55,17 +80,24 @@ function Ticket() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="mt-4 max-width p-5 bg-white border border-zinc-400 rounded-md shadow-xl">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-4 max-width p-6 border border-gray-300 bg-zinc-100 rounded-lg"
+      >
         <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           <div>
-            <label html="shopName">Shop Name: <span className="text-red-600">*</span></label>
-            
+            <label
+              htmlFor="shopName"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Shop Name: <span className="text-red-600">*</span>
+            </label>
             <select
               name="shopName"
               id="shopName"
-              value={formData.shopName} 
-              onChange={handleChange} 
-              className="w-full p-2 border border-zinc-300 rounded-md"
+              value={formData.shopName}
+              onChange={handleChange}
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
             >
               <option value="">Select Shop</option>
               <option value="Press">Press</option>
@@ -81,77 +113,143 @@ function Ticket() {
             </select>
           </div>
           <div>
-            <label htmlFor="safetyIssue">Safety Issue: <span className="text-red-600">*</span></label>
+            <label
+              htmlFor="safetyIssue"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Safety Issue: <span className="text-red-600">*</span>
+            </label>
             <input
               type="text"
               id="safetyIssue"
               name="safetyIssue"
               value={formData.safetyIssue}
               onChange={handleChange}
-              className="w-full p-2 border border-zinc-300 rounded-md"
-            >
-            </input>
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+            />
           </div>
           <div>
-            <label htmlFor="prodTarget">Prod. Target(number): <span className="text-red-600">*</span></label>
+            <label
+              htmlFor="prodTarget"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Prod. Target (number):{" "}
+              <span className="text-red-600">*</span>
+            </label>
             <input
               type="text"
               id="prodTarget"
               name="prodTarget"
               value={formData.prodTarget}
               onChange={handleChange}
-              className="w-full p-2 border border-zinc-300 rounded-md"
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
             />
           </div>
           <div>
-            <label htmlFor="prodActual">Prod. Actual(number): <span className="text-red-600">*</span></label>
+            <label
+              htmlFor="prodActual"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Prod. Actual (number):{" "}
+              <span className="text-red-600">*</span>
+            </label>
             <input
               type="text"
               id="prodActual"
               name="prodActual"
               value={formData.prodActual}
               onChange={handleChange}
-              className="w-full p-2 border border-zinc-300 rounded-md"
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
             />
           </div>
           <div>
-            <label htmlFor="affectedDnTime">Affected DN. Time(mins): <span className="text-red-600">*</span></label>
+            <label
+              htmlFor="affectedDnTime"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Affected DN. Time (mins):{" "}
+              <span className="text-red-600">*</span>
+            </label>
             <input
               type="text"
               id="affectedDnTime"
               name="affectedDnTime"
               value={formData.affectedDnTime}
               onChange={handleChange}
-              className="w-full p-2 border border-zinc-300 rounded-md"
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
             />
           </div>
           <div>
-            <label htmlFor="grossDnTime">Gross DN. Time(mins): <span className="text-red-600">*</span></label>
+            <label
+              htmlFor="grossDnTime"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Gross DN. Time (mins):{" "}
+              <span className="text-red-600">*</span>
+            </label>
             <input
               type="text"
               id="grossDnTime"
               name="grossDnTime"
               value={formData.grossDnTime}
               onChange={handleChange}
-              className="w-full p-2 border border-zinc-300 rounded-md"
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="majorBreakdown"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Major Breakdown: <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="text"
+              id="majorBreakdown"
+              name="majorBreakdown"
+              value={formData.majorBreakdown}
+              onChange={handleChange}
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="employeeId"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Employee ID: <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="text"
+              id="employeeId"
+              name="employeeId"
+              value={formData.employeeId}
+              onChange={handleChange}
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="employeeName"
+              className="mb-2 font-medium text-gray-900"
+            >
+              Employee Name: <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="text"
+              id="employeeName"
+              name="employeeName"
+              value={formData.employeeName}
+              onChange={handleChange}
+              className="w-full mt-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
             />
           </div>
         </div>
-
-        <div className="mt-4">
-          <label htmlFor="majorBreakdown">Major Breakdown: <span className="text-red-600">*</span></label>
-          <input
-            type="text"
-            id="majorBreakdown"
-            name="majorBreakdown"
-            value={formData.majorBreakdown}
-            onChange={handleChange}
-            className="w-full p-2 border border-zinc-300 rounded-md"
-          />
-        </div>
-
         <div className="flex space-x-4 mt-4">
-          <button type="submit" className="p-2 text-white bg-black rounded-md">
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          >
             Submit
           </button>
         </div>

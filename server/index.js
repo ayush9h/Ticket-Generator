@@ -20,6 +20,8 @@ app.post("/api/tickets", async (req, res) => {
     affectedDnTime,
     grossDnTime,
     majorBreakdown,
+    employeeId,
+    employeeName
   } = req.body;
 
   try {
@@ -32,6 +34,8 @@ app.post("/api/tickets", async (req, res) => {
         affectedDnTime,
         grossDnTime,
         majorBreakdown,
+        employeeId,
+        employeeName
       },
     });
 
