@@ -1,15 +1,41 @@
+"use client"
 import axios from "axios"; 
+import * as XLSX from "xlsx";
+import { toast } from "react-hot-toast";
+
 async function fetchTableData(){
-  let response = await axios.get(process.env.BACKEND_URL)
+  let response = await axios.get(process.env.NEXT_PUBLIC_BACKEND_URL)
   return response.data
 }
 
 async function TicketTable() {  
   let data = await fetchTableData();
+
+  const exportToExcel = async () => {
+    if (data.length === 0) {
+      toast.error("No data available to export.");
+      return;
+    }
+  
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Ticket Data");
+    XLSX.writeFile(workbook, `ticket_data_${new Date().toISOString().split("T")[0]}.xlsx`);
+    toast.success("Data exported to Excel successfully!");
+  };
+
   return (
     <div className="max-width mt-10 mb-10 p-5 bg-white border border-zinc-400 rounded-md shadow-xl">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold"> Tickets</h2>
+        <div className="flex items-center">
+          <button 
+            onClick={exportToExcel} 
+            className="w-32 p-2 text-black bg-transparent border border-zinc-500 rounded-md hover:bg-black hover:text-white transition-all mr-4"
+          >
+            Export
+          </button>
+        </div>
       </div>
         <div className="overflow-x-auto">
           <table className="min-w-full md:w-auto">
