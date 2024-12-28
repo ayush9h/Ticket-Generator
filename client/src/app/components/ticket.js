@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 function Ticket() {
   const [formData, setFormData] = useState({
     shopName: "",
-    safetyIssue: "",
+    safetyIssue: "NIL",
     prodTarget: "",
     prodActual: "",
     affectedDnTime: "",
@@ -89,7 +89,8 @@ function Ticket() {
               value={formData.safetyIssue}
               onChange={handleChange}
               className="w-full p-2 border border-zinc-300 rounded-md"
-            />
+            >
+            </input>
           </div>
           <div>
             <label htmlFor="prodTarget">Prod. Target(number): <span className="text-red-600">*</span></label>
