@@ -44,19 +44,19 @@ async function TicketTable() {
   return (
     <div className="max-width mt-10 mb-10 p-5 border border-gray-300 bg-zinc-100 rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Tickets</h2>
+      <h2 className="font-semibold hidden sm:block md:text-xl">Tickets</h2>
 
         <div className="flex justify-between items-center">
         <button 
             onClick={loadData} 
-            className=" flex justify-center items-center text-blue-700 bg-blue-100 hover:bg-blue-200 font-medium rounded-lg mr-4 focus:outline-none sm:text-sm md:text-md sm:px-2 sm:py-1.5 md:px-5 md:py-2.5"
+            className=" flex justify-center items-center text-blue-700 bg-blue-100 hover:bg-blue-200 font-medium rounded-lg mr-4 focus:outline-none px-2 py-1 sm:w-28 sm:px-3 sm:py-2 md:w-32 md:px-4 md:py-2.5"
           >
             <RefreshCcw size={16} className="mr-2"/> Refresh 
         </button>
 
         <button 
             onClick={exportToExcel} 
-            className="flex justify-center items-center w-32 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-sm md:text-md sm:px-2 sm:py-1.5 md:px-5 md:py-2.5"
+            className="flex justify-center items-center w-32 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-2 py-1 sm:w-28 sm:px-3 sm:py-2 md:w-32 md:px-4 md:py-2.5"
           >
             <DownloadIcon size={16} className="mr-2"/> Export
         </button>
