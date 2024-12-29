@@ -1,6 +1,6 @@
 "use client"
 import axios from "axios"; 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { toast } from "react-hot-toast";
 import { Trash2, RefreshCcw, DownloadIcon } from "lucide-react";
@@ -27,6 +27,10 @@ async function TicketTable() {
     let newData = await fetchTableData()
     setData(newData)
   }
+
+  useEffect(()=>{
+    loadData();
+  },[])
 
   const exportToExcel = async () => {
     if (data.length === 0) {
