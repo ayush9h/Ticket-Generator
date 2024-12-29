@@ -8,8 +8,8 @@ const montserrat = Montserrat({
 })
 
 export const metadata = {
-  title: "Tata Motors Data Capturing System",
-  description: "Created for Tata Motors",
+  title: "CMS DWM Data Capturing System - TMPVL Pune",
+  description: "Shopwise machine data for daily review.",
 };
 
 export default function RootLayout({ children }) {
