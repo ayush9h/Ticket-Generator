@@ -60,7 +60,7 @@ app.get("/api/tickets", async (req, res) => {
   }
 });
 
-app.delete("/api/tickets/:id", async(req,res)=>{
+app.delete("/api/tickets/delete/:id", async(req,res)=>{
   const {id} = req.params
   console.log(id)
   try{

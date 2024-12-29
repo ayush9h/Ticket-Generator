@@ -11,7 +11,7 @@ async function fetchTableData(){
 
 const deleteTicket = async(id) =>{
   try{
-    await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tickets/${id}`);
+    await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tickets/delete/${id}`);
     toast.success("Ticket deleted successfully")
   } catch(error){
     toast.error("Failed to delete the ticket.")
