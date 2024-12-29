@@ -1,25 +1,32 @@
 "use client"
 import axios from "axios"; 
+import { useState } from "react";
 import * as XLSX from "xlsx";
 import { toast } from "react-hot-toast";
-import { Trash2 } from "lucide-react";
+import { Trash2, RefreshCcw, DownloadIcon } from "lucide-react";
 
 async function fetchTableData(){
   let response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tickets`)
   return response.data
 }
 
-const deleteTicket = async(id) =>{
+const deleteTicket = async(id, refreshData) =>{
   try{
     await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tickets/delete/${id}`);
     toast.success("Ticket deleted successfully")
+    refreshData();
   } catch(error){
     toast.error("Failed to delete the ticket.")
   }
 }
 
 async function TicketTable() {  
-  let data = await fetchTableData();
+  const [data, setData] = useState([])
+
+  const loadData = async () => {
+    let newData = await fetchTableData()
+    setData(newData)
+  }
 
   const exportToExcel = async () => {
     if (data.length === 0) {
@@ -37,16 +44,25 @@ async function TicketTable() {
   return (
     <div className="max-width mt-10 mb-10 p-5 border border-gray-300 bg-zinc-100 rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold"> Tickets</h2>
-        <div className="flex items-center">
-          <button 
-            onClick={exportToExcel} 
-            className="w-32 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        <h2 className="text-xl font-semibold">Tickets</h2>
+
+        <div className="flex justify-between items-center">
+        <button 
+            onClick={loadData} 
+            className=" flex justify-center items-center text-sm text-blue-700 bg-blue-100 hover:bg-blue-200 font-medium rounded-lg px-5 py-2.5 mr-4 focus:outline-none"
           >
-            Export
-          </button>
-        </div>
+            <RefreshCcw size={16} className="mr-2"/> Refresh 
+        </button>
+
+        <button 
+            onClick={exportToExcel} 
+            className="flex justify-center items-center w-32 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          >
+            <DownloadIcon size={16} className="mr-2"/> Export
+        </button>
+        </div>        
       </div>
+
         <div className="overflow-x-auto">
           <table className="min-w-full md:w-auto">
             <thead>
@@ -77,7 +93,7 @@ async function TicketTable() {
                   <td className="p-2 border border-slate-300">{ticket.employeeId}</td>
                   <td className="p-2 border border-slate-300">{ticket.employeeName}</td>
                   <td className="p-2 border border-slate-300">
-                    <Trash2 size={18} className="text-red-400 cursor-pointer hover:text-red-800 hover:rounded-full hover:w-6 hover:h-6 transition-all" onClick={() => deleteTicket(ticket.id)}></Trash2>
+                    <Trash2 size={18} className="text-red-400 cursor-pointer hover:text-red-800 hover:rounded-full hover:w-6 hover:h-6 transition-all" onClick={() => deleteTicket(ticket.id, loadData)}></Trash2>
                   </td>
                 </tr>
               ))}
