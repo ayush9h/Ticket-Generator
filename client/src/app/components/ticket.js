@@ -28,7 +28,7 @@ function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL, formData);
+        await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tickets`, formData);
         toast.success("Form submitted successfully!");
         setFormData({
           shopName: "",

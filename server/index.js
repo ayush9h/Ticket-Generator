@@ -60,6 +60,24 @@ app.get("/api/tickets", async (req, res) => {
   }
 });
 
+app.delete("/api/tickets/:id", async(req,res)=>{
+  const {id} = req.params
+  console.log(id)
+  try{
+    const ticket = await prisma.ticket.delete({
+      where:{
+        id: parseInt(id),
+      },
+    });
+
+    res.status(200).json({message:"Ticket deleted successfully",ticket})
+  }
+  catch(error){
+    console.error(error);
+    res.status(500).json({error: "An error occurred while deleting the ticket"})
+  }
+})
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
