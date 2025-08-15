@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { toast } from "react-hot-toast";
 import Popup from "reactjs-popup";
-import { Trash2, RefreshCcw, DownloadIcon } from "lucide-react";
+import { Trash2, RefreshCcw, DownloadIcon, ChevronLeft, ChevronRight } from "lucide-react";
 
-async function fetchTableData() {
-  let response = await axios.get(`http://localhost:5000/api/tickets`);
+async function fetchTableData(currentPage) {
+  let response = await axios.get(`http://localhost:5000/api/tickets?page=${currentPage}`);
   return response.data;
 }
 
@@ -23,15 +23,31 @@ const deleteTicket = async (id, refreshData) => {
 
 export default function TicketTable() {
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPage, setTotalPages] = useState(1)
 
   const loadData = async () => {
-    let newData = await fetchTableData();
-    setData(newData);
+    let newData = await fetchTableData(currentPage);
+    setTotalPages(newData.totalPages)
+    setData(newData.tickets);
   };
+
+  const handleNextPage = ()=>{
+    if(currentPage < totalPage){
+      setCurrentPage(currentPage + 1);
+    } 
+  }
+
+  const handlePrevPage = ()=>{
+    if(currentPage > 1 ){
+      setCurrentPage(currentPage - 1);
+    }
+
+  }
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [currentPage]);
 
   const exportToExcel = async () => {
     if (data.length === 0) {
@@ -156,7 +172,34 @@ export default function TicketTable() {
             )}
           </tbody>
         </table>
+        
       </div>
+        
+    
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <button
+          onClick={handlePrevPage}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-all"
+        >
+          <ChevronLeft size={16} />
+          Prev
+        </button>
+
+        <span className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg">
+          Page {currentPage} of {totalPage}
+        </span>
+
+        
+        <button
+          onClick={handleNextPage}
+        
+          className="flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-all"
+        >
+          Next
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
     </div>
   );
 }

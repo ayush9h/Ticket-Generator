@@ -12,9 +12,29 @@ exports.createTicket = async (req, res) => {
 };
 
 exports.getTickets = async (req, res) => {
+  let {page = 1, limit = 5} = req.query
+
+  page = parseInt(page)
+  limit = parseInt(limit)
+
+  const skip = (page - 1) * limit
+
+  const totalDocs = await Ticket.countDocuments()
+  const totalPages = Math.ceil(totalDocs / limit);
+
   try {
-    const tickets = await Ticket.find();
-    res.json(tickets);
+    const tickets = await Ticket.find()
+    .sort({createdAt:-1})
+    .skip(skip)
+    .limit(limit)
+    ;
+    res.json({
+      page,
+      limit,
+      totalDocs,
+      totalPages,
+      tickets:tickets
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "There was an error while fetching the tickets" });
