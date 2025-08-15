@@ -34,11 +34,11 @@ The Ticket Generator is a web application developed as the Minimum Viable Produc
 
 ### Ticket Generation Login Form
 ![Ticket Form](https://github.com/ayush9h/Ticket-Generator/blob/bc06707f6d9e55ecf5d7161bdec5212fad37e485/CMS-DWM-001.png)
-*Description: The main form used to generate tickets.*
+*Description: The restricted login page.*
 
 ### Dashboard / History
 ![Dashboard](https://github.com/ayush9h/Ticket-Generator/blob/bc06707f6d9e55ecf5d7161bdec5212fad37e485/CMW-DWM-002.png)
-*Description: View of generated tickets.*
+*Description: Form to generate tickets and dashboard view of generated tickets.*
 
 
 ## License
