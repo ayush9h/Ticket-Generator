@@ -11,6 +11,7 @@ const ticketSchema = new mongoose.Schema({
   employeeId: String,
   employeeName: String,
   createdAt: { type: Date, default: Date.now },
+  createdBy: String
 });
 
 module.exports = mongoose.model("Ticket", ticketSchema);

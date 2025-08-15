@@ -7,13 +7,13 @@ import Popup from "reactjs-popup";
 import { Trash2, RefreshCcw, DownloadIcon } from "lucide-react";
 
 async function fetchTableData() {
-  let response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tickets`)
+  let response = await axios.get(`http://localhost:5000/api/tickets`)
   return response.data
 }
 
 const deleteTicket = async (id, refreshData) => {
   try {
-    await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tickets/delete/${id}`);
+    await axios.delete(`http://localhost:5000/api/tickets/delete/${id}`);
     toast.success("Ticket deleted successfully")
     refreshData();
   } catch (error) {
@@ -128,7 +128,7 @@ async function TicketTable() {
                           </button>
                           <button
                             onClick={() => {
-                              deleteTicket(ticket.id, loadData);
+                              deleteTicket(ticket._id, loadData);
                               close();
                             }}
                             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"

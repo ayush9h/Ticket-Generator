@@ -2,6 +2,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 function Ticket() {
   const [formData, setFormData] = useState({
     shopName: "",
@@ -12,8 +14,27 @@ function Ticket() {
     grossDnTime: "",
     majorBreakdown: "",
     employeeId: "",
-    employeeName: ""
+    employeeName: "",
+    createdBy: ""
   });
+
+  const [loggedUser, setLoggedUser] = useState(null);
+
+    const router = useRouter();
+
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("loggedUser"));
+    if (storedUser?.userMail) {
+      setLoggedUser(storedUser);
+      setFormData((prev) => ({
+        ...prev,
+        createdBy: storedUser.userMail
+      }));
+    } else {
+      router.push("/login");  
+    }
+  }, [router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,9 +48,13 @@ function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tickets`, formData);
+        await axios.post(
+          `http://localhost:5000/api/tickets`,
+          formData
+        );
         toast.success("Form submitted successfully!");
-        setFormData({
+        setFormData((prev) => ({
+          ...prev,
           shopName: "",
           safetyIssue: "NIL",
           prodTarget: "",
@@ -39,7 +64,8 @@ function Ticket() {
           majorBreakdown: "",
           employeeId: "",
           employeeName: "",
-        });
+          createdBy: prev.createdBy
+        }));
       } catch (error) {
         console.error("Error submitting form:", error);
         toast.error("Error submitting form. Please try again.");
@@ -47,6 +73,10 @@ function Ticket() {
     }
   };
 
+   const handleLogout = () => {
+    localStorage.removeItem("loggedUser");
+    router.push("/login");
+  };
   const validateForm = () => {
     const {
       shopName,
@@ -58,6 +88,7 @@ function Ticket() {
       majorBreakdown,
       employeeId,
       employeeName,
+      createdBy
     } = formData;
 
     if (
@@ -69,16 +100,27 @@ function Ticket() {
       !grossDnTime ||
       !majorBreakdown ||
       !employeeId ||
-      !employeeName
+      !employeeName ||
+      !createdBy
     ) {
       toast.error("Please fill in all required fields.");
       return false;
     }
     return true;
   };
-
   return (
     <>
+      {loggedUser && (
+        <div className="flex items-center justify-between p-4 bg-indigo-50 text-indigo-800 font-medium mb-4 rounded-lg">
+          <span>Logged in as: {loggedUser.userMail}</span>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
+      )}
       <form
         onSubmit={handleSubmit}
         className="mt-4 max-width p-6 border border-gray-300 bg-zinc-100 rounded-lg"

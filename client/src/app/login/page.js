@@ -1,89 +1,71 @@
-"use client"
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import axios from "axios";
-import React, { useState } from "react";
+import Navbar from "../components/navbar";
 
-const createOrGetUser = async (userData) => {
-  const response = await axios.post(
-    `http://localhost:5000/api/user/login`,
-    userData
-  );
-  return response.data;
-};
-
-const LoginPage = () => {
-  const [formData, setFormData] = useState({
-    userName: "",
-    userMail: "",
-  });
-
-  const [serverResponse, setServerResponse] = useState(null);
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+export default function LoginPage() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({ userName: "", userMail: "" });
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.userName || !formData.userMail) {
-      alert("Please fill in all fields");
-      return;
+    setLoading(true);
+    try {
+      const res = await axios.post("http://localhost:5000/api/user/login", formData);
+      localStorage.setItem("loggedUser", JSON.stringify(res.data));
+      router.push("/"); 
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
     }
-    const user = await createOrGetUser(formData);
-    setServerResponse(user);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 font-sans">
-      <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          Login
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-         
-          <div>
-            <label className="block text-gray-600 mb-1">User Name</label>
-            <input
-              type="text"
-              name="userName"
-              value={formData.userName}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-            />
-          </div>
+    <>
+      <Navbar />
 
-          <div>
-            <label className="block text-gray-600 mb-1">User Email</label>
-            <input
-              type="email"
-              name="userMail"
-              value={formData.userMail}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition duration-200"
-          >
-            Login / Register
-          </button>
-        </form>
-
-        {serverResponse && (
-          <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <h4 className="font-semibold mb-2 text-gray-700">Server Response:</h4>
-            <pre className="text-sm text-gray-600 overflow-x-auto">
-              {JSON.stringify(serverResponse, null, 2)}
-            </pre>
-          </div>
-        )}
+      <div className="flex h-screen justify-center items-center bg-gray-100">
+        <div className="bg-white shadow-lg rounded-xl p-8 max-w-md w-full animate-fadeIn">
+          <h2 className="text-2xl font-bold text-center text-indigo-800 mb-6">
+            Welcome Back
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-600">Name</label>
+              <input
+                type="text"
+                name="userName"
+                value={formData.userName}
+                onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
+                className="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-600">Email</label>
+              <input
+                type="email"
+                name="userMail"
+                value={formData.userMail}
+                onChange={(e) => setFormData({ ...formData, userMail: e.target.value })}
+                className="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-indigo-700 text-white rounded-lg font-semibold hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-all disabled:opacity-50"
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
-};
-
-export default LoginPage;
+}
