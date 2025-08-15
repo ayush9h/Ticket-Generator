@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
@@ -7,38 +7,37 @@ import Popup from "reactjs-popup";
 import { Trash2, RefreshCcw, DownloadIcon } from "lucide-react";
 
 async function fetchTableData() {
-  let response = await axios.get(`http://localhost:5000/api/tickets`)
-  return response.data
+  let response = await axios.get(`http://localhost:5000/api/tickets`);
+  return response.data;
 }
 
 const deleteTicket = async (id, refreshData) => {
   try {
     await axios.delete(`http://localhost:5000/api/tickets/delete/${id}`);
-    toast.success("Ticket deleted successfully")
+    toast.success("Ticket deleted successfully");
     refreshData();
   } catch (error) {
-    toast.error("Failed to delete the ticket.")
+    toast.error("Failed to delete the ticket.");
   }
-}
+};
 
-async function TicketTable() {
-  const [data, setData] = useState([])
+export default function TicketTable() {
+  const [data, setData] = useState([]);
 
   const loadData = async () => {
-    let newData = await fetchTableData()
-    setData(newData)
-  }
+    let newData = await fetchTableData();
+    setData(newData);
+  };
 
   useEffect(() => {
     loadData();
-  }, [])
+  }, []);
 
   const exportToExcel = async () => {
     if (data.length === 0) {
       toast.error("No data available to export.");
       return;
     }
-
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Ticket Data");
@@ -47,107 +46,117 @@ async function TicketTable() {
   };
 
   return (
-    <div className="max-width mt-10 mb-10 p-5 border border-gray-300 bg-zinc-100 rounded-lg">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="font-semibold hidden sm:block md:text-xl">Tickets</h2>
-
-        <div className="flex justify-between items-center">
+    <div className="max-width mt-10 mb-10">
+  
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
+        <h2 className="font-bold text-lg sm:text-xl">Tickets</h2>
+        <div className="flex gap-3">
           <button
             onClick={loadData}
-            className=" flex justify-center items-center text-blue-700 bg-blue-100 hover:bg-blue-200 font-medium rounded-lg mr-4 focus:outline-none px-2 py-1 sm:w-28 sm:px-3 sm:py-2 md:w-32 md:px-4 md:py-2.5"
+            className="flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-100 hover:bg-blue-200 rounded-lg"
           >
             <RefreshCcw size={16} className="mr-2" /> Refresh
           </button>
-
           <button
             onClick={exportToExcel}
-            className="flex justify-center items-center w-32 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-2 py-1 sm:w-28 sm:px-3 sm:py-2 md:w-32 md:px-4 md:py-2.5"
+            className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
           >
             <DownloadIcon size={16} className="mr-2" /> Export
           </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full md:w-auto">
-          <thead>
+ 
+      <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-blue-50 sticky top-0">
             <tr>
-              <th className="p-2 bg-blue-100 border border-slate-400">Shop Name</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Safety Issue</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Prod Target</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Prod Actual</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Affected DN. Time</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Gross DN. Time</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Major Breakdown</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Employee ID</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Employee Name</th>
-              <th className="p-2 bg-blue-100 border border-slate-400">Actions</th>
-
+              {[
+                "Shop Name",
+                "Safety Issue",
+                "Prod Target",
+                "Prod Actual",
+                "Affected DN. Time",
+                "Gross DN. Time",
+                "Major Breakdown",
+                "Employee ID",
+                "Employee Name",
+                "Actions",
+              ].map((header) => (
+                <th key={header} className="p-3 font-semibold border-b border-gray-200">
+                  {header}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {data.map((ticket, index) => (
-              <tr key={index}>
-                <td className="p-2 border border-slate-300">{ticket.shopName}</td>
-                <td className="p-2 border border-slate-300">{ticket.safetyIssue}</td>
-                <td className="p-2 border border-slate-300">{ticket.prodTarget}</td>
-                <td className="p-2 border border-slate-300">{ticket.prodActual}</td>
-                <td className="p-2 border border-slate-300">{ticket.affectedDnTime}</td>
-                <td className="p-2 border border-slate-300">{ticket.grossDnTime}</td>
-                <td className="p-2 border border-slate-300">{ticket.majorBreakdown}</td>
-                <td className="p-2 border border-slate-300">{ticket.employeeId}</td>
-                <td className="p-2 border border-slate-300">{ticket.employeeName}</td>
-                <td className="p-2 border border-slate-300">
-                  <Popup
-                    trigger={
-                      <Trash2
-                        size={18}
-                        className="text-red-400 cursor-pointer hover:text-red-800 hover:rounded-full hover:w-6 hover:h-6 transition-all"
-                      />
-                    }
-                    position="center center"
-                    modal
-                    nested
-                    overlayStyle={{background:"rgba(0,0,0,0.7)"}}
-                  >
-                    {(close) => (
-                      <div className="max-width p-4 bg-zinc-100 rounded shadow-xl max-w-md mx-auto border border-slate-300">
-                        <h1 className="mb-4 sm:text-sm lg:text-xl font-semibold">Delete Ticket</h1>
-                        <p className="md:text-md mb-4">
-                          The ticket will be deleted permanently. This action cannot be undone.
-                        </p>
-                        <p className="md:text-md mb-4">
-                          Are you sure you want to delete this ticket?
-                        </p>
-                        <div className="flex justify-end space-x-4">
-                          <button
-                            onClick={close}
-                            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={() => {
-                              deleteTicket(ticket._id, loadData);
-                              close();
-                            }}
-                            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </Popup>
+            {data.length === 0 ? (
+              <tr>
+                <td colSpan="10" className="text-center py-6 text-gray-500">
+                  No tickets found.
                 </td>
-
               </tr>
-            ))}
+            ) : (
+              data.map((ticket) => (
+                <tr
+                  key={ticket._id}
+                  className="hover:bg-gray-50 transition-colors even:bg-gray-50"
+                >
+                  <td className="p-3 border-b">{ticket.shopName}</td>
+                  <td className="p-3 border-b">{ticket.safetyIssue}</td>
+                  <td className="p-3 border-b">{ticket.prodTarget}</td>
+                  <td className="p-3 border-b">{ticket.prodActual}</td>
+                  <td className="p-3 border-b">{ticket.affectedDnTime}</td>
+                  <td className="p-3 border-b">{ticket.grossDnTime}</td>
+                  <td className="p-3 border-b">{ticket.majorBreakdown}</td>
+                  <td className="p-3 border-b">{ticket.employeeId}</td>
+                  <td className="p-3 border-b">{ticket.employeeName}</td>
+                  <td className="p-3 border-b">
+                    <Popup
+                      trigger={
+                        <Trash2
+                          size={18}
+                          className="text-red-500 cursor-pointer hover:text-red-700"
+                        />
+                      }
+                      position="center center"
+                      modal
+                      nested
+                      overlayStyle={{ background: "rgba(0,0,0,0.6)" }}
+                    >
+                      {(close) => (
+                        <div className="p-5 bg-white rounded-lg shadow-lg max-w-sm mx-auto">
+                          <h1 className="mb-2 text-lg font-semibold">Delete Ticket</h1>
+                          <p className="text-sm text-gray-600 mb-4">
+                            This ticket will be permanently deleted. This action cannot be undone.
+                          </p>
+                          <div className="flex justify-end gap-3">
+                            <button
+                              onClick={close}
+                              className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded-lg"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={() => {
+                                deleteTicket(ticket._id, loadData);
+                                close();
+                              }}
+                              className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-lg"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </Popup>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
     </div>
   );
 }
-
-export default TicketTable;

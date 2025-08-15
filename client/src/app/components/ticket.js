@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 function Ticket() {
   const [formData, setFormData] = useState({
     shopName: "",
@@ -18,21 +18,18 @@ function Ticket() {
     createdBy: ""
   });
 
-  const [loggedUser, setLoggedUser] = useState(null);
-
-    const router = useRouter();
-
+  const router = useRouter();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("loggedUser"));
     if (storedUser?.userMail) {
-      setLoggedUser(storedUser);
+
       setFormData((prev) => ({
         ...prev,
         createdBy: storedUser.userMail
       }));
     } else {
-      router.push("/login");  
+      router.push("/login");
     }
   }, [router]);
 
@@ -48,10 +45,7 @@ function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post(
-          `http://localhost:5000/api/tickets`,
-          formData
-        );
+        await axios.post(`http://localhost:5000/api/tickets`, formData);
         toast.success("Form submitted successfully!");
         setFormData((prev) => ({
           ...prev,
@@ -73,10 +67,6 @@ function Ticket() {
     }
   };
 
-   const handleLogout = () => {
-    localStorage.removeItem("loggedUser");
-    router.push("/login");
-  };
   const validateForm = () => {
     const {
       shopName,
@@ -110,17 +100,7 @@ function Ticket() {
   };
   return (
     <>
-      {loggedUser && (
-        <div className="flex items-center justify-between p-4 bg-indigo-50 text-indigo-800 font-medium mb-4 rounded-lg">
-          <span>Logged in as: {loggedUser.userMail}</span>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-          >
-            Logout
-          </button>
-        </div>
-      )}
+      
       <form
         onSubmit={handleSubmit}
         className="mt-4 max-width p-6 border border-gray-300 bg-zinc-100 rounded-lg"
