@@ -2,9 +2,9 @@
 
 ## Overview
 
-The Ticket Generator is a web application developed as the Minimum Viable Product (MVP) for Tata Motors' CMS-DWM Data Capturing System. This tool facilitates the creation of unique ticket numbers for various operational needs within the organization
+The Ticket Generator is a web application developed as the Minimum Viable Product (MVP) for Tata Motors' CMS-DWM Data Capturing System. This tool facilitates the creation of unique ticket numbers for various operational needs within the organization.
 
----
+
 
 ## Features
 
@@ -12,7 +12,6 @@ The Ticket Generator is a web application developed as the Minimum Viable Produc
 - **User-Friendly Interface**: Simple and intuitive form for ticket creation.
 - **Integration Ready**: Can be integrated with other systems for workflow management.
 
----
 
 ## Technologies Used
 
@@ -21,28 +20,26 @@ The Ticket Generator is a web application developed as the Minimum Viable Produc
 - **Database**: MongoDB
 - **Deployment**: Vercel
 
----
+
 
 ## Installation
 
 ### Prerequisites
 
-- Node.js, Mongo installed on your system.
+- Node.js, MongoDB installed on your system.
 
----
+
 
 ## Screenshots
 
 ### Ticket Generation Login Form
-![Ticket Form]([screenshots/ticket_form.png](https://github.com/ayush9h/Ticket-Generator/blob/main/CMS-DWM-001.png))
+![Ticket Form](https://github.com/ayush9h/Ticket-Generator/blob/bc06707f6d9e55ecf5d7161bdec5212fad37e485/CMS-DWM-001.png)
 *Description: The main form used to generate tickets.*
 
-### Dashboard / History 
-![Dashboard]([screenshots/dashboard.png](https://github.com/ayush9h/Ticket-Generator/blob/main/CMS-DWM-002.png))
-*Description: Optional history or dashboard view of generated tickets.*
+### Dashboard / History
+![Dashboard](https://github.com/ayush9h/Ticket-Generator/blob/bc06707f6d9e55ecf5d7161bdec5212fad37e485/CMW-DWM-002.png)
+*Description: View of generated tickets.*
 
-
----
 
 ## License
 
