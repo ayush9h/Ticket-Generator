@@ -1,4 +1,3 @@
-// src/controllers/ticketController.js
 const Ticket = require("../models/Ticket");
 
 exports.createTicket = async (req, res) => {
@@ -12,7 +11,7 @@ exports.createTicket = async (req, res) => {
 };
 
 exports.getTickets = async (req, res) => {
-  let {page = 1, limit = 5} = req.query
+  let {page = 1, limit = 3} = req.query
 
   page = parseInt(page)
   limit = parseInt(limit)
