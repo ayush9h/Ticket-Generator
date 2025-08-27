@@ -7,13 +7,14 @@ import Popup from "reactjs-popup";
 import { Trash2, RefreshCcw, DownloadIcon, ChevronLeft, ChevronRight } from "lucide-react";
 
 async function fetchTableData(currentPage) {
-  let response = await axios.get(`http://localhost:5000/api/tickets?page=${currentPage}`);
+
+  let response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets?page=${currentPage}`);
   return response.data;
 }
 
 const deleteTicket = async (id, refreshData) => {
   try {
-    await axios.delete(`http://localhost:5000/api/tickets/delete/${id}`);
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/delete/${id}`);
     toast.success("Ticket deleted successfully");
     refreshData();
   } catch (error) {
