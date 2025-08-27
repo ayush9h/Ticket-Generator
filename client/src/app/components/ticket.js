@@ -45,7 +45,7 @@ function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post(`http://localhost:5000/api/tickets`, formData);
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets`, formData);
         toast.success("Form submitted successfully!");
         setFormData((prev) => ({
           ...prev,

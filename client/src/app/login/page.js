@@ -15,14 +15,14 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/user/login", formData);
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, formData);
       localStorage.setItem("loggedUser", JSON.stringify(res.data));
       router.push("/");
     } catch (err) {
       if (err.response?.data?.error) {
         toast.error(err.response.data.error);
       } else {
-        toast.error("An error occurred while logging in.");
+        toast.error(`An error occurred while logging in due to ${err}`);
       }
       setLoading(false);
     }
