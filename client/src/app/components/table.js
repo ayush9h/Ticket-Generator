@@ -65,13 +65,13 @@ export default function TicketTable() {
     }
     })
 
-     socket.on("ticketDeleted", ({ id,totalPages }) => {
+      socket.on("ticketDeleted", ({ tickets, totalPages, page }) => {
         setTotalPages(totalPages);
 
-        setData((prev) => {
-            const updated = prev.filter((ticket) => ticket._id !== id);
-            return updated;
-      });
+        if (page === currentPage) {
+          setData(tickets);
+        }
+
     });
 
     return () => {

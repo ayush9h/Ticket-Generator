@@ -52,11 +52,17 @@ exports.deleteTicket = async (req, res) => {
     
     const totalDocs = await Ticket.countDocuments();
     const limit = parseInt(req.query.limit) || 3;
+    const page = parseInt(req.query.page) || 1;
     const totalPages = Math.ceil(totalDocs / limit);
+    const skip = (page - 1) * limit;
 
+    const tickets = await Ticket.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-    req.io.emit("ticketDeleted", {id: req.params.id, totalPages})
-    
+    req.io.emit("ticketDeleted", { id: req.params.id, totalPages, tickets, page });
+
     res.status(200).json({ message: "Ticket deleted successfully" });
   } catch (error) {
     console.error(error);
