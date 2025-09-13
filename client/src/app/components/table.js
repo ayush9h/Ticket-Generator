@@ -8,88 +8,90 @@ import Popup from "reactjs-popup";
 import { Trash2,  DownloadIcon, ChevronLeft, ChevronRight } from "lucide-react";
 
 
-const socket = io(process.env.NEXT_PUBLIC_API_URL)
-const token = localStorage.getItem("jwtToken")
-async function fetchTableData(currentPage) {
-
-  let response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets?page=${currentPage}`,{
-    headers:{
-      Authorization:`Bearer ${token}`
-    }
-  });
-  return response.data;
-}
-
-const deleteTicket = async (id) => {
-  try {
-    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/delete/${id}`,{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    });
-    toast.success("Ticket deleted successfully");
-  } catch (error) {
-    toast.error("Failed to delete the ticket.");
-  }
-};
-
 export default function TicketTable() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPage, setTotalPages] = useState(1)
 
+  const [token, setToken] = useState(null);
+
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem("jwtToken");
+      setToken(storedToken);
+
+      const socketClient = io(process.env.NEXT_PUBLIC_API_URL);
+      setSocket(socketClient);
+
+      return () => {
+        socketClient.disconnect();
+      };
+    }
+  }, []);
+
+  const fetchTableData = async (page) => {
+    if (!token) return;
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets?page=${page}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  };
+
+  const deleteTicket = async (id) => {
+    if (!token) return;
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("Ticket deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete the ticket.");
+    }
+  };
+
   const loadData = async () => {
-    let newData = await fetchTableData(currentPage);
-    setTotalPages(newData.totalPages)
+    const newData = await fetchTableData(currentPage);
+    if (!newData) return;
+    setTotalPages(newData.totalPages);
     setData(newData.tickets);
   };
 
-  const handleNextPage = ()=>{
-    if(currentPage < totalPage){
-      setCurrentPage(currentPage + 1);
-    } 
-  }
-
-  const handlePrevPage = ()=>{
-    if(currentPage > 1 ){
-      setCurrentPage(currentPage - 1);
-    }
-
-  }
-
   useEffect(() => {
+    if (!socket) return;
 
     loadData();
-    
-    socket.on("ticketCreated", ({ticket, totalPages})=>{
-      
-      setTotalPages(totalPages)
-      
+
+    socket.on("ticketCreated", ({ ticket, totalPages }) => {
+      setTotalPages(totalPages);
       if (currentPage === 1) {
-        setData((prev) => {
-          let updated = [ticket, ...prev];
-          return updated.slice(0, 3);
-      });
-    }
-    })
+        setData((prev) => [ticket, ...prev].slice(0, 3));
+      }
+    });
 
-      socket.on("ticketDeleted", ({ tickets, totalPages, page }) => {
-        setTotalPages(totalPages);
-
-        if (page === currentPage) {
-          setData(tickets);
-        }
-
+    socket.on("ticketDeleted", ({ tickets, totalPages, page }) => {
+      setTotalPages(totalPages);
+      if (page === currentPage) {
+        setData(tickets);
+      }
     });
 
     return () => {
       socket.off("ticketCreated");
       socket.off("ticketDeleted");
     };
+  }, [socket, currentPage, token]);
 
-  }, [currentPage]);
+  const handleNextPage = () => {
+    if (currentPage < totalPage) setCurrentPage(currentPage + 1);
+  };
 
-  const exportToExcel = async () => {
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const exportToExcel = () => {
     if (data.length === 0) {
       toast.error("No data available to export.");
       return;

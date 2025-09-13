@@ -7,7 +7,6 @@ import { ticketSchema } from "../schemas/formSchema";
 
 function Ticket() {
 
-  const token = localStorage.getItem("jwtToken")
   const initialFormState = {
     shopName: "",
     safetyIssue: "NIL",
@@ -20,12 +19,15 @@ function Ticket() {
     employeeName: "",
     createdBy: ""
   };
-
+  
   const [formData, setFormData] = useState(initialFormState);
-
+  const [token, setToken] = useState(null)
+  
   const router = useRouter();
-
+  
   useEffect(() => {
+    const token = localStorage.getItem("jwtToken")
+    setToken(token)
     const storedUser = JSON.parse(localStorage.getItem("loggedUser"));
     if (storedUser?.userMail) {
 
