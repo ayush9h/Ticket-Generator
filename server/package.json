@@ -9,6 +9,7 @@
     "dotenv": "^17.2.1",
     "express": "^4.21.0",
     "mongoose": "^8.17.1",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "socket.io": "^4.8.1"
   }
 }

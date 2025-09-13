@@ -2,9 +2,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
+import { io } from "socket.io-client";
 import { toast } from "react-hot-toast";
 import Popup from "reactjs-popup";
-import { Trash2, RefreshCcw, DownloadIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { Trash2,  DownloadIcon, ChevronLeft, ChevronRight } from "lucide-react";
+
+
+const socket = io(process.env.NEXT_PUBLIC_API_URL)
 
 async function fetchTableData(currentPage) {
 
@@ -12,11 +16,10 @@ async function fetchTableData(currentPage) {
   return response.data;
 }
 
-const deleteTicket = async (id, refreshData) => {
+const deleteTicket = async (id) => {
   try {
     await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/delete/${id}`);
     toast.success("Ticket deleted successfully");
-    refreshData();
   } catch (error) {
     toast.error("Failed to delete the ticket.");
   }
@@ -48,6 +51,22 @@ export default function TicketTable() {
 
   useEffect(() => {
     loadData();
+
+    socket.on("ticketCreated", (newTicket)=>{
+      if (currentPage === 1) {
+        setData((prev) => [newTicket, ...prev]);
+      }
+    })
+
+     socket.on("ticketDeleted", ({ id }) => {
+      setData((prev) => prev.filter((ticket) => ticket._id !== id));
+    });
+
+    return () => {
+      socket.off("ticketCreated");
+      socket.off("ticketDeleted");
+    };
+
   }, [currentPage]);
 
   const exportToExcel = async () => {
@@ -68,12 +87,6 @@ export default function TicketTable() {
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
         <h2 className="font-bold text-lg sm:text-xl">Tickets</h2>
         <div className="flex gap-3">
-          <button
-            onClick={loadData}
-            className="flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-100 hover:bg-blue-200 rounded-lg"
-          >
-            <RefreshCcw size={16} className="mr-2" /> Refresh
-          </button>
           <button
             onClick={exportToExcel}
             className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
@@ -156,7 +169,7 @@ export default function TicketTable() {
                             </button>
                             <button
                               onClick={() => {
-                                deleteTicket(ticket._id, loadData);
+                                deleteTicket(ticket._id);
                                 close();
                               }}
                               className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-lg"

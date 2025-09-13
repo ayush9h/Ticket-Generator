@@ -3,6 +3,9 @@ const Ticket = require("../models/Ticket");
 exports.createTicket = async (req, res) => {
   try {
     const ticket = await Ticket.create(req.body);
+
+    req.io.emit("ticketCreated", ticket)
+
     res.status(201).json(ticket);
   } catch (error) {
     console.error(error);
@@ -43,6 +46,9 @@ exports.getTickets = async (req, res) => {
 exports.deleteTicket = async (req, res) => {
   try {
     await Ticket.findByIdAndDelete(req.params.id);
+    
+    req.io.emit("ticketDeleted", {id: req.params.id})
+    
     res.status(200).json({ message: "Ticket deleted successfully" });
   } catch (error) {
     console.error(error);
