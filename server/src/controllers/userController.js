@@ -25,8 +25,6 @@ exports.createUser = async (req, res) => {
       user: payload,
     })
 
-
-
   } catch (error) {
     res.status(500).json({ error: `There was an error while fetching the user due to ${error}` });
   }
