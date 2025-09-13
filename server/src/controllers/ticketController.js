@@ -4,7 +4,10 @@ exports.createTicket = async (req, res) => {
   try {
     const ticket = await Ticket.create(req.body);
 
-    req.io.emit("ticketCreated", ticket)
+    const totalDocs = await Ticket.countDocuments()
+    const totalPages = Math.ceil(totalDocs / 3);
+
+    req.io.emit("ticketCreated", {ticket, totalPages})
 
     res.status(201).json(ticket);
   } catch (error) {
@@ -47,7 +50,12 @@ exports.deleteTicket = async (req, res) => {
   try {
     await Ticket.findByIdAndDelete(req.params.id);
     
-    req.io.emit("ticketDeleted", {id: req.params.id})
+    const totalDocs = await Ticket.countDocuments();
+    const limit = parseInt(req.query.limit) || 3;
+    const totalPages = Math.ceil(totalDocs / limit);
+
+
+    req.io.emit("ticketDeleted", {id: req.params.id, totalPages})
     
     res.status(200).json({ message: "Ticket deleted successfully" });
   } catch (error) {

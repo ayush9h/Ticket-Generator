@@ -50,16 +50,28 @@ export default function TicketTable() {
   }
 
   useEffect(() => {
-    loadData();
 
-    socket.on("ticketCreated", (newTicket)=>{
+    loadData();
+    
+    socket.on("ticketCreated", ({ticket, totalPages})=>{
+      
+      setTotalPages(totalPages)
+      
       if (currentPage === 1) {
-        setData((prev) => [newTicket, ...prev]);
-      }
+        setData((prev) => {
+          let updated = [ticket, ...prev];
+          return updated.slice(0, 3);
+      });
+    }
     })
 
-     socket.on("ticketDeleted", ({ id }) => {
-      setData((prev) => prev.filter((ticket) => ticket._id !== id));
+     socket.on("ticketDeleted", ({ id,totalPages }) => {
+        setTotalPages(totalPages);
+
+        setData((prev) => {
+            const updated = prev.filter((ticket) => ticket._id !== id);
+            return updated;
+      });
     });
 
     return () => {
