@@ -7,6 +7,7 @@ import { ticketSchema } from "../schemas/formSchema";
 
 function Ticket() {
 
+  const token = localStorage.getItem("jwtToken")
   const initialFormState = {
     shopName: "",
     safetyIssue: "NIL",
@@ -49,7 +50,11 @@ function Ticket() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets`, formData);
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets`, formData,{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        });
         toast.success("Form submitted successfully!");
         setFormData(initialFormState)
       } catch (error) {

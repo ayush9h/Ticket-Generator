@@ -16,7 +16,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, formData);
-      localStorage.setItem("loggedUser", JSON.stringify(res.data));
+      
+      localStorage.setItem("jwtToken", res.data.token)
+      localStorage.setItem("loggedUser", JSON.stringify(res.data.user));
       router.push("/");
     } catch (err) {
       if (err.response?.data?.error) {

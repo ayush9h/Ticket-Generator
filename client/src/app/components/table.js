@@ -9,16 +9,24 @@ import { Trash2,  DownloadIcon, ChevronLeft, ChevronRight } from "lucide-react";
 
 
 const socket = io(process.env.NEXT_PUBLIC_API_URL)
-
+const token = localStorage.getItem("jwtToken")
 async function fetchTableData(currentPage) {
 
-  let response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets?page=${currentPage}`);
+  let response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets?page=${currentPage}`,{
+    headers:{
+      Authorization:`Bearer ${token}`
+    }
+  });
   return response.data;
 }
 
 const deleteTicket = async (id) => {
   try {
-    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/delete/${id}`);
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets/delete/${id}`,{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    });
     toast.success("Ticket deleted successfully");
   } catch (error) {
     toast.error("Failed to delete the ticket.");

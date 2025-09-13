@@ -1,10 +1,10 @@
 const express = require("express")
 const ticketController = require("../controllers/ticketController")
-
+const authenticateToken = require("../middleware/auth")
 const router = express.Router()
 
-router.post("/", ticketController.createTicket);
-router.get("/",ticketController.getTickets);
-router.delete("/delete/:id",ticketController.deleteTicket);
+router.post("/", authenticateToken, ticketController.createTicket);
+router.get("/",authenticateToken, ticketController.getTickets);
+router.delete("/delete/:id",authenticateToken, ticketController.deleteTicket);
 
 module.exports = router;
