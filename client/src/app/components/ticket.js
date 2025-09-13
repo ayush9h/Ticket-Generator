@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { ticketSchema } from "../schemas/formSchema";
 
 function Ticket() {
-  const [formData, setFormData] = useState({
+
+  const initialFormState = {
     shopName: "",
     safetyIssue: "NIL",
     prodTarget: "",
@@ -16,7 +18,9 @@ function Ticket() {
     employeeId: "",
     employeeName: "",
     createdBy: ""
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormState);
 
   const router = useRouter();
 
@@ -47,19 +51,7 @@ function Ticket() {
       try {
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/tickets`, formData);
         toast.success("Form submitted successfully!");
-        setFormData((prev) => ({
-          ...prev,
-          shopName: "",
-          safetyIssue: "NIL",
-          prodTarget: "",
-          prodActual: "",
-          affectedDnTime: "",
-          grossDnTime: "",
-          majorBreakdown: "",
-          employeeId: "",
-          employeeName: "",
-          createdBy: prev.createdBy
-        }));
+        setFormData(initialFormState)
       } catch (error) {
         console.error("Error submitting form:", error);
         toast.error("Error submitting form. Please try again.");
@@ -68,35 +60,13 @@ function Ticket() {
   };
 
   const validateForm = () => {
-    const {
-      shopName,
-      safetyIssue,
-      prodTarget,
-      prodActual,
-      affectedDnTime,
-      grossDnTime,
-      majorBreakdown,
-      employeeId,
-      employeeName,
-      createdBy
-    } = formData;
+   const result = ticketSchema.safeParse(formData)
 
-    if (
-      !shopName ||
-      !safetyIssue ||
-      !prodTarget ||
-      !prodActual ||
-      !affectedDnTime ||
-      !grossDnTime ||
-      !majorBreakdown ||
-      !employeeId ||
-      !employeeName ||
-      !createdBy
-    ) {
-      toast.error("Please fill in all required fields.");
-      return false;
-    }
-    return true;
+   if(!result.success){
+    toast.error(result.error.errors[0].message);
+    return false;
+   }
+   return true;
   };
   return (
     <>
@@ -164,7 +134,7 @@ function Ticket() {
               <span className="text-red-600">*</span>
             </label>
             <input
-              type="text"
+              type="number"
               id="prodTarget"
               name="prodTarget"
               value={formData.prodTarget}
@@ -181,7 +151,7 @@ function Ticket() {
               <span className="text-red-600">*</span>
             </label>
             <input
-              type="text"
+              type="number"
               id="prodActual"
               name="prodActual"
               value={formData.prodActual}
@@ -198,7 +168,7 @@ function Ticket() {
               <span className="text-red-600">*</span>
             </label>
             <input
-              type="text"
+              type="number"
               id="affectedDnTime"
               name="affectedDnTime"
               value={formData.affectedDnTime}
@@ -215,7 +185,7 @@ function Ticket() {
               <span className="text-red-600">*</span>
             </label>
             <input
-              type="text"
+              type="number"
               id="grossDnTime"
               name="grossDnTime"
               value={formData.grossDnTime}
